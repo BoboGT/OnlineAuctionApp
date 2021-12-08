@@ -8,11 +8,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class HomeController {
@@ -50,8 +52,19 @@ public class HomeController {
     public String getHomePage(Model model) {
         List<ProductDto> productDtoList = productService.getAllProductDtos();
         model.addAttribute("products", productDtoList);
-        System.out.println("produse: " + productDtoList);
+
         return "home";
+    }
+
+    @GetMapping("/item/{productId}") // spring intelege ca primeste un parametru cand vede {}
+    public String getProductPage(@PathVariable(value = "productId") String productId, Model model) { // captureaza valoarea din url si o storeaza in parametrul nostru
+        Optional<ProductDto> optionalProductDto = productService.getProductDtoById(productId);
+        if(!optionalProductDto.isPresent()) {
+            return "errorPage";
+        }
+        ProductDto productDto = optionalProductDto.get(); // despachetarea cutiei.get
+        model.addAttribute("product", productDto);
+        return "viewItem";
     }
 
 
