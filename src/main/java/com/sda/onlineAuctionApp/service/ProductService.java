@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -40,6 +41,14 @@ public class ProductService {
 
     }
 
+    //    public List<ProductDto> getAllProductDtosWithStream() {
+//        List<Product> products = productRepository.findAll(); // aduce toate produsele din baza de date
+//       return products.stream()
+//                .map(productMapper:: map)
+//                .collect(Collectors.toList());
+//
+//    }
+
     public Optional<ProductDto> getProductDtoById(String productId) { // am stabilit ca metoda intoarce o cutie, care poate contine un Id poate nu
         Optional<Product> optionalProduct = productRepository.findById(Integer.valueOf(productId)); // cand apelam metoda findById, intoarce un Optional, daca nu ar gasi produsul si nu am da optional, probabil ar arunca NULL Pointer exception
             if(!optionalProduct.isPresent()) {
@@ -52,4 +61,7 @@ public class ProductService {
         return Optional.of(productDto); // intoarcem o cutie care contine un productDto populat
 
     }
+
+
+
 }
