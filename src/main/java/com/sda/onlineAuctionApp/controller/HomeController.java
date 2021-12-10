@@ -23,7 +23,7 @@ import java.util.Optional;
 public class HomeController {
 
     @Autowired
-     private ProductService productService;
+    private ProductService productService;
 
     @Autowired
     private ProductDtoValidator productDtoValidator;
@@ -35,7 +35,7 @@ public class HomeController {
     private UserService userService;
 
     @GetMapping("/addItem") // aici e ruta pe care o scriu in pagina web,
-    public String getAddItemPage(Model model){ // handler pe ruta addItem, metoda se activeaza cand vine un request
+    public String getAddItemPage(Model model) { // handler pe ruta addItem, metoda se activeaza cand vine un request
         //Dispatcher Servlet stie ca handlerul asteapta un obiect
         System.out.println("Rulez get pe /addItem");
         ProductDto productDto = new ProductDto();
@@ -46,7 +46,7 @@ public class HomeController {
     @PostMapping("/addItem")
     public String postAddItemPage(ProductDto productDto, BindingResult bindingResult, @RequestParam("productImage") MultipartFile multipartFile) {
         productDtoValidator.validate(productDto, bindingResult);
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             return "addItem"; // returneaza numele de pagina de post
         }
 
@@ -56,7 +56,7 @@ public class HomeController {
 
     }
 
-    @GetMapping("/home")
+    @GetMapping({"/home","/"})
     public String getHomePage(Model model) {
         List<ProductDto> productDtoList = productService.getAllProductDtos();
         model.addAttribute("products", productDtoList);
@@ -67,7 +67,7 @@ public class HomeController {
     @GetMapping("/item/{productId}") // spring intelege ca primeste un parametru cand vede {}
     public String getProductPage(@PathVariable(value = "productId") String productId, Model model) { // captureaza valoarea din url si o storeaza in parametrul nostru
         Optional<ProductDto> optionalProductDto = productService.getProductDtoById(productId);
-        if(!optionalProductDto.isPresent()) {
+        if (!optionalProductDto.isPresent()) {
             return "errorPage";
         }
         ProductDto productDto = optionalProductDto.get(); // despachetarea cutiei.get
@@ -85,12 +85,27 @@ public class HomeController {
     @PostMapping("/registration")
     public String postRegistrationPage(Model model, UserDto userDto, BindingResult bindingResult) {
         userDtoValidator.validate(userDto, bindingResult);
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
+            System.out.println("eroare la validare");
             return "registration";
         }
         userService.add(userDto);
         return "redirect:/home";
 
+    }
+
+    @GetMapping("/login")
+    public String getLoginPage(Model model) {
+
+        return "login";
+
+    }
+
+    @GetMapping("/login-error")
+    public String getLoginErrorPage(Model model) {
+        model.addAttribute("loginError", true);
+
+        return "login";
 
     }
 
