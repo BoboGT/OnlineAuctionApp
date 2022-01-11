@@ -1,19 +1,43 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/bootstrap.min.css}"/>
 
-    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!-- Additional CSS Files aici sunt foldere locale pe care ar le-am pus efectiv in proiect -->
+
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/fontawesome.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/tooplate-main.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/owl.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/assets/css/custom.css}"/>
 </head>
 <body>
+<div class="featured container no-gutter">
 
-<form class="form-horizontal" method="post"  th:action="@{/login}">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a sec:authorize="isAuthenticated()" class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a sec:authorize="hasRole('ROLE_SELLER')" class="nav-link" href="/addItem">Add Item</a>
+                </li>
+                <li class="nav-item">
+                    <a sec:authorize="isAnonymous()" class="nav-link" href="/registration">Registration</a>
+                </li>
+                <li class="nav-item">
+                    <a sec:authorize="isAnonymous()" class="nav-link active" href="/login">Login</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+<form class="form-horizontal loginPage" method="post"  th:action="@{/login}">
     <!-- action ne face conexiunea, ne da URL-ul din controller, il aduce pe pagina HTML la request, conexiune backend Frontend  -->
-    <fieldset>
+
         <div id="legend">
             <legend class="">Login</legend>
         </div>
@@ -25,9 +49,8 @@
             <!-- email -->
             <label class="control-label" for="email">E-mail</label>
             <div class="controls">
-
                 <!-- am scris name username in loc de email pt ca spring security nu stie daca e nume sau email sau altceva -->
-                <input type="text" id="email" name="username"  placeholder="Email" class="input-xlarge">
+                <input type="text" id="email" name="username"  placeholder="Email" class="form-control">
                 <p class="help-block"></p>
             </div>
         </div>
@@ -36,7 +59,7 @@
             <!-- Password-->
             <label class="control-label" for="password">Password</label>
             <div class="controls">
-                <input type="password" id="password" name="password"  placeholder="Password" class="input-xlarge">
+                <input type="password" id="password" name="password"  placeholder="Password" class="form-control">
             </div>
         </div>
 
@@ -46,8 +69,8 @@
                 <button class="btn btn-success" type="submit">Login</button>
             </div>
         </div>
-    </fieldset>
-</form>
 
+</form>
+</div>
 </body>
 </html>

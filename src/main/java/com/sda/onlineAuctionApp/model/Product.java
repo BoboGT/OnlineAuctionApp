@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,8 +19,14 @@ public class Product {
     private Integer startBiddingPrice;
     private Category category;
     private LocalDateTime endDateTime;
+    @ManyToOne
+    private User winner;
     @Lob
     private byte[] image;
+
+                                            // numele variabilei din Bid care duce catre product private Product product;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    private List<Bid> bidsList;
 
 
 

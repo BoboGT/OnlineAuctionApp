@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 //autorizeaza pe acest path
                 .antMatchers("/registration", "/assets/**").permitAll()
-                // vrem sa autentificam fiecare request, sa verificam
+                // vrem sa autentificam fiecare request, sa verificam, aici sunt autentificati cei care nu sunt logati
                 .anyRequest().authenticated()
                 // un si delimitator de reguli
                 .and()
