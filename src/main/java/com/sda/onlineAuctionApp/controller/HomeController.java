@@ -74,6 +74,16 @@ public class HomeController {
         return "home";
     }
 
+    @GetMapping("/myProducts")
+    public String getmyProductsPage(Model model, Authentication authentication) {
+        List<ProductDto> productDtoList = productService.getProductDtosFor(authentication.getName());
+        model.addAttribute("products", productDtoList);
+
+        return "myProducts";
+    }
+
+
+
     @GetMapping("/item/{productId}") // spring intelege ca primeste un parametru cand vede {}
     public String getProductPage(@PathVariable(value = "productId") String productId, Model model, Authentication authentication) { // captureaza valoarea din url si o storeaza in parametrul nostru
         Optional<ProductDto> optionalProductDto = productService.getProductDtoById(productId, authentication.getName());

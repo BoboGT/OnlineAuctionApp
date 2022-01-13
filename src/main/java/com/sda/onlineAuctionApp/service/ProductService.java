@@ -76,4 +76,16 @@ public class ProductService {
     }
 
 
-}
+    public List<ProductDto> getProductDtosFor(String email) {
+        List<Product> products = productRepository.findByWinnerEmail(email);
+            List<ProductDto> result = new ArrayList<>(); // lista goala de productDtos
+
+            for (Product product : products) { // parcurgem toate produsele
+                ProductDto productDto = productMapper.map(product, email);
+
+                result.add(productDto);
+            }
+            return result;
+        }
+    }
+

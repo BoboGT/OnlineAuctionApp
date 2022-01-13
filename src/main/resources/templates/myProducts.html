@@ -2,6 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
+    <title> This is the Online Auction application</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
+
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" type="text/css" th:href="@{/assets/css/bootstrap.min.css}"/>
 
@@ -13,6 +17,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/assets/css/custom.css}"/>
 </head>
 <body>
+
 <div class="featured container no-gutter">
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -22,7 +27,7 @@
                 <li class="nav-item">
                     <a sec:authorize="isAuthenticated()" class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a sec:authorize="hasRole('ROLE_BIDDER')" class="nav-link" href="/myProducts">My Products</a>
                 </li>
                 <li class="nav-item">
@@ -32,48 +37,29 @@
                     <a sec:authorize="isAnonymous()" class="nav-link" href="/registration">Registration</a>
                 </li>
                 <li class="nav-item">
-                    <a sec:authorize="isAnonymous()" class="nav-link active" href="/login">Login</a>
+                    <a sec:authorize="isAnonymous()" class="nav-link " href="/login">Login</a>
                 </li>
+                <li class="nav-item">
+                    <a sec:authorize="isAuthenticated()" class="nav-link " href="/logout">Logout</a>
+                </li>
+
             </ul>
         </div>
     </nav>
 
-<form class="form-horizontal loginPage" method="post"  th:action="@{/login}">
-    <!-- action ne face conexiunea, ne da URL-ul din controller, il aduce pe pagina HTML la request, conexiune backend Frontend  -->
+    <div class="row posts homePage">
 
-        <div id="legend">
-            <legend class="">Login</legend>
+        <div id="1" class="item new col-md-4" th:each="product:${products}">
+            <a th:href="@{/item/{id}(id=${product.id})}">
+                <div class="featured-item">
+                    <img th:src="${'data:image/png;base64,' + product.image}" alt="">
+                    <h4 th:text="${product.name}"></h4>
+                    <h6 th:if="${product.currentBidPrice != '0'}" th:text="${product.currentBidPrice}"></h6>
+                    <h6 th:if="${product.currentBidPrice == '0'}" th:text="${product.startBiddingPrice}"></h6>
+                </div>
+            </a>
         </div>
-        <div class="control-group error">
-            <p th:if="${loginError}">Wrong username or password</p>
-        </div>
-
-        <div class="control-group">
-            <!-- email -->
-            <label class="control-label" for="email">E-mail</label>
-            <div class="controls">
-                <!-- am scris name username in loc de email pt ca spring security nu stie daca e nume sau email sau altceva -->
-                <input type="text" id="email" name="username"  placeholder="Email" class="form-control">
-                <p class="help-block"></p>
-            </div>
-        </div>
-
-        <div class="control-group">
-            <!-- Password-->
-            <label class="control-label" for="password">Password</label>
-            <div class="controls">
-                <input type="password" id="password" name="password"  placeholder="Password" class="form-control">
-            </div>
-        </div>
-
-        <div class="control-group">
-            <!-- Button -->
-            <div class="controls">
-                <button class="btn btn-success" type="submit">Login</button>
-            </div>
-        </div>
-
-</form>
+    </div>
 </div>
 </body>
 </html>

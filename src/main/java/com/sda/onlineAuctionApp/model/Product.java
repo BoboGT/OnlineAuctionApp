@@ -25,7 +25,7 @@ public class Product {
     private byte[] image;
 
                                             // numele variabilei din Bid care duce catre product private Product product;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.EAGER)
     private List<Bid> bidsList;
 
 
