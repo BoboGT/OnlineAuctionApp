@@ -19,7 +19,7 @@ public class Product {
     private Integer startBiddingPrice;
     private Category category;
     private LocalDateTime endDateTime;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User winner;
     @Lob
     private byte[] image;

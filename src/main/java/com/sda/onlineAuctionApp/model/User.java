@@ -19,6 +19,9 @@ public class User {
     private String lastName;
     private String password;
     private UserRole userRole;
+                                                                //hibernate o sa aduca repede lista de produse castigata, el by default e lazy
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "winner", fetch = FetchType.EAGER)
+    private List<Product> productsWon;
 
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
